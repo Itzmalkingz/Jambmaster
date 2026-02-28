@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Exam Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .results-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .results-score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            border: 5px solid white;
+        }
+
+        .results-percentage {
+            font-size: 4rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .results-percentage-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .results-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .result-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .result-card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .feedback-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .feedback-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-box {
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .feedback-excellent {
+            background: #d4edda;
+            color: #155724;
+            border-left: 5px solid var(--success);
+        }
+
+        .feedback-good {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+
+        .feedback-fair {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 5px solid var(--warning);
+        }
+
+        .feedback-poor {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid var(--danger);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons a, .action-buttons button {
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-dashboard {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+
+        .btn-dashboard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-retake {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-retake:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-materials {
+            background: white;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .btn-materials:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .performance-breakdown {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .breakdown-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .breakdown-percentage {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .breakdown-bar {
+            width: 200px;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .breakdown-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .results-score-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .results-percentage {
+                font-size: 2.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .action-buttons a, .action-buttons button {
+                width: 100%;
+                text-align: center;
+            }
+
+            .breakdown-bar {
+                width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+    <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem 0;">
+        <h1 style="text-align: center; margin-bottom: 2rem;">Mock Exam Results</h1>
+
+        <!-- Results Hero Section -->
+        <div class="results-hero">
+            <div class="results-score-circle">
+                <div class="results-percentage" id="final-percentage">--</div>
+                <div class="results-percentage-label">Your Score</div>
+            </div>
+            <h2 id="result-title">Great Job!</h2>
+            <p style="font-size: 1.1rem;">You completed the JAMB mock examination</p>
+        </div>
+
+        <!-- Results Cards -->
+        <div class="results-details">
+            <div class="result-card">
+                <h3>📊 Total Questions</h3>
+                <div class="result-value" id="total-questions">180</div>
+            </div>
+            <div class="result-card">
+                <h3>✅ Correct Answers</h3>
+                <div class="result-value" id="correct-answers">0</div>
+            </div>
+            <div class="result-card">
+                <h3>❌ Incorrect Answers</h3>
+                <div class="result-value" id="incorrect-answers">0</div>
+            </div>
+            <div class="result-card">
+                <h3>⏭️ Unanswered</h3>
+                <div class="result-value" id="unanswered-count">0</div>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback-section">
+            <h2>Performance Feedback</h2>
+            <div id="feedback-box"></div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="performance-breakdown">
+            <h2 style="color: var(--primary); margin-bottom: 1.5rem;">📚 Recommended Next Steps</h2>
+            <div class="breakdown-item">
+                <div class="breakdown-label">Review Weak Areas</div>
+                <p style="margin: 0; color: #666; font-size: 0.9rem;">Study materials on subjects where you scored lowest</p>
+            </div>
+            <div class="breakdown-item">
+                <div class="breakdown-label">Practice More Quizzes</div>
+                <p style="margin: 0; color: #666; font-size: 0.9rem;">Complete subject-specific quizzes to strengthen weak areas</p>
+            </div>
+            <div class="breakdown-item">
+                <div class="breakdown-label">Retake Mock Exam</div>
+                <p style="margin: 0; color: #666; font-size: 0.9rem;">Take another full mock exam after studying to track improvement</p>
+            </div>
+            <div class="breakdown-item">
+                <div class="breakdown-label">Manage Time Better</div>
+                <p style="margin: 0; color: #666; font-size: 0.9rem;">Practice time management to improve accuracy in real exam</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="dashboard.html" class="btn-dashboard">📊 Go to Dashboard</a>
+            <button onclick="retakeMockExam()" class="btn-retake">🔄 Retake Mock Exam</button>
+            <a href="materials.html" class="btn-materials">📚 Study Materials</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Load and display exam results
+        function displayExamResults() {
+            checkAuth();
+            
+            const resultsData = JSON.parse(sessionStorage.getItem('examResults'));
+            if (!resultsData) {
+                window.location.href = 'exam.html';
+                return;
+            }
+
+            const { score, percentage, correctCount, totalCount, answers } = resultsData;
+            const incorrectCount = totalCount - correctCount;
+            const unansweredCount = totalCount - Object.keys(answers).length;
+
+            // Update stats
+            document.getElementById('final-percentage').textContent = percentage;
+            document.getElementById('total-questions').textContent = totalCount;
+            document.getElementById('correct-answers').textContent = correctCount;
+            document.getElementById('incorrect-answers').textContent = incorrectCount;
+            document.getElementById('unanswered-count').textContent = unansweredCount;
+
+            // Update feedback
+            const percentNum = parseFloat(percentage);
+            let feedbackText = '';
+            let feedbackClass = '';
+            let resultTitle = '';
+
+            if (percentNum >= 80) {
+                feedbackText = '🎉 <strong>Excellent Work!</strong> You\'re well-prepared for the real JAMB exam. Keep this up and you\'ll score high!';
+                feedbackClass = 'feedback-excellent';
+                resultTitle = 'Outstanding Performance!';
+            } else if (percentNum >= 70) {
+                feedbackText = '👍 <strong>Very Good!</strong> You\'ve demonstrated solid understanding. Review the materials once more and you\'ll be ready.';
+                feedbackClass = 'feedback-good';
+                resultTitle = 'Impressive Score!';
+            } else if (percentNum >= 55) {
+                feedbackText = '📚 <strong>Good Effort!</strong> You\'re on the right track. Focus on studying weak areas and retake practice tests.';
+                feedbackClass = 'feedback-fair';
+                resultTitle = 'Good Progress!';
+            } else {
+                feedbackText = '💪 <strong>Keep Going!</strong> This is a learning opportunity. Review all study materials thoroughly and practice more quizzes.';
+                feedbackClass = 'feedback-poor';
+                resultTitle = 'Time to Focus!';
+            }
+
+            document.getElementById('result-title').textContent = resultTitle;
+            
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.innerHTML = `<div class="feedback-box ${feedbackClass}">${feedbackText}</div>`;
+
+            // Clear session data
+            sessionStorage.removeItem('examResults');
+        }
+
+        function retakeMockExam() {
+            window.location.href = 'exam-taking.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', displayExamResults);
+    </script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+</body>
+</html>

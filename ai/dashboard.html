@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem 0;">
+        <div class="dashboard-header">
+            <h1>Welcome, <span id="user-name">User</span>!</h1>
+            <p>Your JAMB preparation dashboard</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <h3>Questions Answered</h3>
+                <p class="stat-value" id="stat-questions">0</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <h3>Correct Answers</h3>
+                <p class="stat-value" id="stat-correct">0</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <h3>Overall Accuracy</h3>
+                <p class="stat-value" id="stat-accuracy">0%</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <h3>Current Streak</h3>
+                <p class="stat-value" id="stat-streak">0</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-section">
+                <h2>Subject Performance</h2>
+                <div id="subject-chart" class="subject-chart"></div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>Quick Actions</h2>
+                <div class="quick-actions">
+                    <button class="action-btn" onclick="window.location.href='quiz.html'">
+                        <span class="action-icon">📝</span>
+                        <span>Start Quiz</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='materials.html'">
+                        <span class="action-icon">📚</span>
+                        <span>Study Materials</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='exam.html'">
+                        <span class="action-icon">🎯</span>
+                        <span>Mock Exam</span>
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='leaderboard.html'">
+                        <span class="action-icon">🏆</span>
+                        <span>Leaderboard</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div id="activity-feed"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+    <script src="questions.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
