@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Leaderboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" style="padding: 2rem 0;">
+        <h1>Leaderboard</h1>
+        <p class="section-subtitle">Top performers this month</p>
+        
+        <div class="leaderboard-filters">
+            <button class="filter-btn active" onclick="filterLeaderboard(this, 'global')">Global</button>
+            <button class="filter-btn" onclick="filterLeaderboard(this, 'monthly')">This Month</button>
+            <button class="filter-btn" onclick="filterLeaderboard(this, 'friends')">Friends</button>
+        </div>
+
+        <div class="leaderboard">
+            <div id="leaderboard-list"></div>
+        </div>
+
+        <div class="your-rank" id="your-rank"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateLeaderboard);
+        } else {
+            updateLeaderboard();
+        }
+    </script>
+</body>
+</html>
+</html>

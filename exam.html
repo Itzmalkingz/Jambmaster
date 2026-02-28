@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Mock Exam</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+     <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem 0;">
+        <h1>Mock Examination</h1>
+        <p class="section-subtitle">Practice under exam conditions (3 hours, 180 questions)</p>
+        
+        <div class="exam-info">
+            <div class="exam-detail">
+                <h3>📋 Format</h3>
+                <p>Full JAMB-style exam with 4 sections</p>
+            </div>
+            <div class="exam-detail">
+                <h3>⏱️ Duration</h3>
+                <p>3 hours (180 minutes)</p>
+            </div>
+            <div class="exam-detail">
+                <h3>📊 Questions</h3>
+                <p>180 questions across 5 subjects</p>
+            </div>
+            <div class="exam-detail">
+                <h3>🎯 Difficulty</h3>
+                <p>Mixed difficulty levels</p>
+            </div>
+        </div>
+
+        <div class="exam-options" style="text-align: center;">
+            <button class="btn btn-primary btn-large" onclick="startMockExam()">Start Mock Exam Now</button>
+            <button class="btn btn-secondary btn-large" onclick="viewPastExams()">View Past Exams</button>
+        </div>
+
+        <div id="past-exams" class="past-exams"></div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script src="questions-new.js"></script>
+    <script src="questions.js"></script>
+</body>
+</html>

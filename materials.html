@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Study Materials</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+     <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem 0;">
+        <h1>Study Materials</h1>
+        <p class="section-subtitle">Comprehensive study guides and resources</p>
+        
+        <div class="materials-grid">
+            <div class="material-card">
+                <div class="material-icon">📖</div>
+                <h3>English Language</h3>
+                <p>Master grammar, vocabulary, reading comprehension and essay writing</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Grammar</span>
+                    <span class="topic-tag">Vocabulary</span>
+                    <span class="topic-tag">Comprehension</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('english')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🔢</div>
+                <h3>Mathematics</h3>
+                <p>Algebra, geometry, trigonometry and calculus concepts explained</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Algebra</span>
+                    <span class="topic-tag">Geometry</span>
+                    <span class="topic-tag">Calculus</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('math')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">⚛️</div>
+                <h3>Physics</h3>
+                <p>Mechanics, waves, electricity and modern physics made simple</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Mechanics</span>
+                    <span class="topic-tag">Waves</span>
+                    <span class="topic-tag">Electricity</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('physics')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🧪</div>
+                <h3>Chemistry</h3>
+                <p>Organic, inorganic chemistry and chemical bonding demystified</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Organic</span>
+                    <span class="topic-tag">Inorganic</span>
+                    <span class="topic-tag">Bonding</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('chemistry')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🧬</div>
+                <h3>Biology</h3>
+                <p>Cell biology, genetics, ecology and human physiology explained</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Cells</span>
+                    <span class="topic-tag">Genetics</span>
+                    <span class="topic-tag">Ecology</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('biology')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">📚</div>
+                <h3>Literature</h3>
+                <p>Analysis of key JAMB literature texts and literary devices</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Texts</span>
+                    <span class="topic-tag">Poetry</span>
+                    <span class="topic-tag">Drama</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('literature')">View</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">📚 JAMB Master</div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="handleLogout(event)">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Study Materials</h1>
+        <p class="section-subtitle">Comprehensive study guides and resources</p>
+        
+        <div class="materials-grid">
+            <div class="material-card">
+                <div class="material-icon">📖</div>
+                <h3>English Language</h3>
+                <p>Master grammar, vocabulary, reading comprehension and essay writing</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Grammar</span>
+                    <span class="topic-tag">Vocabulary</span>
+                    <span class="topic-tag">Comprehension</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('english')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🔢</div>
+                <h3>Mathematics</h3>
+                <p>Algebra, geometry, trigonometry and calculus concepts explained</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Algebra</span>
+                    <span class="topic-tag">Geometry</span>
+                    <span class="topic-tag">Calculus</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('math')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">⚛️</div>
+                <h3>Physics</h3>
+                <p>Mechanics, waves, electricity and modern physics made simple</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Mechanics</span>
+                    <span class="topic-tag">Waves</span>
+                    <span class="topic-tag">Electricity</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('physics')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🧪</div>
+                <h3>Chemistry</h3>
+                <p>Organic, inorganic chemistry and chemical bonding demystified</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Organic</span>
+                    <span class="topic-tag">Inorganic</span>
+                    <span class="topic-tag">Bonding</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('chemistry')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">🧬</div>
+                <h3>Biology</h3>
+                <p>Cell biology, genetics, ecology and human physiology explained</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Cells</span>
+                    <span class="topic-tag">Genetics</span>
+                    <span class="topic-tag">Ecology</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('biology')">View</button>
+            </div>
+
+            <div class="material-card">
+                <div class="material-icon">📚</div>
+                <h3>Literature</h3>
+                <p>Analysis of key JAMB literature texts and literary devices</p>
+                <div class="material-topics">
+                    <span class="topic-tag">Texts</span>
+                    <span class="topic-tag">Poetry</span>
+                    <span class="topic-tag">Drama</span>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="viewMaterial('literature')">View</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

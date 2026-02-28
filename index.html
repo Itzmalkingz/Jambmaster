@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Your Path to Success</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body id="app">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page active">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1>Welcome to JAMB Master</h1>
+                <p>Your complete guide to acing the JAMB exam</p>
+                
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+
+                <p class="auth-toggle">Don't have an account? <a href="#" onclick="switchToSignup()">Sign up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signup-page" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1>Create Your Account</h1>
+                <p>Start your journey to JAMB success</p>
+                
+                <form id="signup-form" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" required placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <input type="email" id="signup-email" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" required placeholder="Create a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" required placeholder="Confirm your password">
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-jamb-year">JAMB Exam Year</label>
+                        <input type="number" id="signup-jamb-year" required placeholder="e.g., 2026">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                </form>
+
+                <p class="auth-toggle">Already have an account? <a href="#" onclick="switchToLogin()">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Welcome, <span id="user-name">User</span>!</h1>
+                <p>Your JAMB preparation dashboard</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <h3>Questions Answered</h3>
+                    <p class="stat-value" id="stat-questions">0</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <h3>Correct Answers</h3>
+                    <p class="stat-value" id="stat-correct">0</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <h3>Overall Accuracy</h3>
+                    <p class="stat-value" id="stat-accuracy">0%</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <h3>Current Streak</h3>
+                    <p class="stat-value" id="stat-streak">0</p>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-section">
+                    <h2>Subject Performance</h2>
+                    <div id="subject-chart" class="subject-chart"></div>
+                </div>
+
+                <div class="dashboard-section">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="navigateTo('quiz')">
+                            <span class="action-icon">📝</span>
+                            <span>Start Quiz</span>
+                        </button>
+                        <button class="action-btn" onclick="navigateTo('materials')">
+                            <span class="action-icon">📚</span>
+                            <span>Study Materials</span>
+                        </button>
+                        <button class="action-btn" onclick="navigateTo('exam')">
+                            <span class="action-icon">🎯</span>
+                            <span>Mock Exam</span>
+                        </button>
+                        <button class="action-btn" onclick="navigateTo('leaderboard')">
+                            <span class="action-icon">🏆</span>
+                            <span>Leaderboard</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div id="activity-feed"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Page -->
+    <div id="quiz-page" class="page">
+        <div class="container">
+            <h1>Practice Quiz</h1>
+            
+            <div class="quiz-controls">
+                <select id="subject-select" onchange="loadQuestions()">
+                    <option value="">Select Subject</option>
+                    <option value="english">English Language</option>
+                    <option value="math">Mathematics</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                </select>
+                
+                <select id="difficulty-select" onchange="loadQuestions()">
+                    <option value="">All Levels</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div id="quiz-container" class="quiz-container">
+                <p class="placeholder-text">Select a subject to begin practicing</p>
+            </div>
+
+            <div id="quiz-results" class="quiz-results" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Study Materials Page -->
+    <div id="materials-page" class="page">
+        <div class="container">
+            <h1>Study Materials</h1>
+            <p class="section-subtitle">Comprehensive study guides and resources</p>
+            
+            <div class="materials-grid">
+                <div class="material-card">
+                    <div class="material-icon">📖</div>
+                    <h3>English Language</h3>
+                    <p>Master grammar, vocabulary, reading comprehension and essay writing</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Grammar</span>
+                        <span class="topic-tag">Vocabulary</span>
+                        <span class="topic-tag">Comprehension</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('english')">View</button>
+                </div>
+
+                <div class="material-card">
+                    <div class="material-icon">🔢</div>
+                    <h3>Mathematics</h3>
+                    <p>Algebra, geometry, trigonometry and calculus concepts explained</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Algebra</span>
+                        <span class="topic-tag">Geometry</span>
+                        <span class="topic-tag">Calculus</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('math')">View</button>
+                </div>
+
+                <div class="material-card">
+                    <div class="material-icon">⚛️</div>
+                    <h3>Physics</h3>
+                    <p>Mechanics, waves, electricity and modern physics made simple</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Mechanics</span>
+                        <span class="topic-tag">Waves</span>
+                        <span class="topic-tag">Electricity</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('physics')">View</button>
+                </div>
+
+                <div class="material-card">
+                    <div class="material-icon">🧪</div>
+                    <h3>Chemistry</h3>
+                    <p>Organic, inorganic chemistry and chemical bonding demystified</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Organic</span>
+                        <span class="topic-tag">Inorganic</span>
+                        <span class="topic-tag">Bonding</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('chemistry')">View</button>
+                </div>
+
+                <div class="material-card">
+                    <div class="material-icon">🧬</div>
+                    <h3>Biology</h3>
+                    <p>Cell biology, genetics, ecology and human physiology explained</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Cells</span>
+                        <span class="topic-tag">Genetics</span>
+                        <span class="topic-tag">Ecology</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('biology')">View</button>
+                </div>
+
+                <div class="material-card">
+                    <div class="material-icon">📚</div>
+                    <h3>Literature</h3>
+                    <p>Analysis of key JAMB literature texts and literary devices</p>
+                    <div class="material-topics">
+                        <span class="topic-tag">Texts</span>
+                        <span class="topic-tag">Poetry</span>
+                        <span class="topic-tag">Drama</span>
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="viewMaterial('literature')">View</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mock Exam Page -->
+    <div id="exam-page" class="page">
+        <div class="container">
+            <h1>Mock Examination</h1>
+            <p class="section-subtitle">Practice under exam conditions (3 hours, 180 questions)</p>
+            
+            <div class="exam-info">
+                <div class="exam-detail">
+                    <h3>📋 Format</h3>
+                    <p>Full JAMB-style exam with 4 sections</p>
+                </div>
+                <div class="exam-detail">
+                    <h3>⏱️ Duration</h3>
+                    <p>3 hours (180 minutes)</p>
+                </div>
+                <div class="exam-detail">
+                    <h3>📊 Questions</h3>
+                    <p>180 questions across 5 subjects</p>
+                </div>
+                <div class="exam-detail">
+                    <h3>🎯 Difficulty</h3>
+                    <p>Mixed difficulty levels</p>
+                </div>
+            </div>
+
+            <div class="exam-options">
+                <button class="btn btn-primary btn-large" onclick="startMockExam()">Start Mock Exam Now</button>
+                <button class="btn btn-secondary btn-large" onclick="viewPastExams()">View Past Exams</button>
+            </div>
+
+            <div id="past-exams" class="past-exams"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Page -->
+    <div id="leaderboard-page" class="page">
+        <div class="container">
+            <h1>Leaderboard</h1>
+            <p class="section-subtitle">Top performers this month</p>
+            
+            <div class="leaderboard-filters">
+                <button class="filter-btn active" onclick="filterLeaderboard('global')">Global</button>
+                <button class="filter-btn" onclick="filterLeaderboard('monthly')">This Month</button>
+                <button class="filter-btn" onclick="filterLeaderboard('friends')">Friends</button>
+            </div>
+
+            <div class="leaderboard">
+                <div class="leaderboard-header">
+                    <div class="rank-col">Rank</div>
+                    <div class="name-col">Name</div>
+                    <div class="score-col">Score</div>
+                    <div class="accuracy-col">Accuracy</div>
+                </div>
+                <div id="leaderboard-list"></div>
+            </div>
+
+            <div class="your-rank">
+                <h3>Your Rank</h3>
+                <div class="rank-card">
+                    <p>Rank: <strong id="your-rank">#-</strong></p>
+                    <p>Score: <strong id="your-leaderboard-score">0</strong></p>
+                    <p>Accuracy: <strong id="your-leaderboard-accuracy">0%</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settings-page" class="page">
+        <div class="container">
+            <h1>Settings</h1>
+            
+            <div class="settings-grid">
+                <div class="settings-section">
+                    <h2>👤 Profile Information</h2>
+                    <form id="profile-form" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profile-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profile-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>JAMB Exam Year</label>
+                            <input type="number" id="profile-year" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Subjects</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="subjects" value="english"> English</label>
+                                <label><input type="checkbox" name="subjects" value="math"> Mathematics</label>
+                                <label><input type="checkbox" name="subjects" value="physics"> Physics</label>
+                                <label><input type="checkbox" name="subjects" value="chemistry"> Chemistry</label>
+                                <label><input type="checkbox" name="subjects" value="biology"> Biology</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+                <div class="settings-section">
+                    <h2>🔐 Account Security</h2>
+                    <form id="password-form" onsubmit="changePassword(event)">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" id="new-password" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm New Password</label>
+                            <input type="password" id="confirm-new-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+
+                <div class="settings-section">
+                    <h2>🔔 Notifications</h2>
+                    <div class="toggle-group">
+                        <label class="toggle-item">
+                            <span>Email Notifications</span>
+                            <input type="checkbox" id="email-notif" checked>
+                            <span class="toggle-switch"></span>
+                        </label>
+                        <label class="toggle-item">
+                            <span>Daily Reminders</span>
+                            <input type="checkbox" id="daily-reminder" checked>
+                            <span class="toggle-switch"></span>
+                        </label>
+                        <label class="toggle-item">
+                            <span>Achievement Alerts</span>
+                            <input type="checkbox" id="achievement-alerts" checked>
+                            <span class="toggle-switch"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-section danger-zone">
+                    <h2>⚠️ Danger Zone</h2>
+                    <button class="btn btn-danger" onclick="deleteAccount()">Delete Account</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="hero">
+                <h1>Welcome to JAMB Exam Prep</h1>
+                <p>Your ultimate platform to ace the Joint Admissions and Matriculation Board examination</p>
+                <button class="btn btn-primary" onclick="showSection('quiz')">Start Practice Quiz</button>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Practice Questions</h3>
+                    <p>Thousands of questions covering all subjects and topics</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Track Progress</h3>
+                    <p>Monitor your performance and identify weak areas</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Strategic Learning</h3>
+                    <p>Get personalized tips to improve your exam performance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Timed Quizzes</h3>
+                    <p>Practice under exam conditions to build speed and accuracy</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>JAMB Subjects Covered</h2>
+                <div class="subjects-grid">
+                    <div class="subject-item">English Language</div>
+                    <div class="subject-item">Mathematics</div>
+                    <div class="subject-item">Physics</div>
+                    <div class="subject-item">Chemistry</div>
+                    <div class="subject-item">Biology</div>
+                    <div class="subject-item">Literature</div>
+                    <div class="subject-item">History</div>
+                    <div class="subject-item">Geography</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="section">
+        <div class="container">
+            <h2>Practice Quiz</h2>
+            
+            <div class="quiz-controls">
+                <select id="subject-select" onchange="loadQuestions()">
+                    <option value="">Select Subject</option>
+                    <option value="english">English Language</option>
+                    <option value="math">Mathematics</option>
+                    <option value="physics">Physics</option>
+                    <option value="chemistry">Chemistry</option>
+                    <option value="biology">Biology</option>
+                </select>
+                
+                <select id="difficulty-select" onchange="loadQuestions()">
+                    <option value="">All Levels</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+            <div id="quiz-container" class="quiz-container">
+                <p class="placeholder-text">Select a subject to begin practicing</p>
+            </div>
+
+            <div id="quiz-results" class="quiz-results" style="display: none;">
+                <h3>Quiz Results</h3>
+                <p>Score: <span id="final-score">0</span>/<span id="total-questions">0</span></p>
+                <p>Percentage: <span id="percentage">0</span>%</p>
+                <button class="btn btn-secondary" onclick="resetQuiz()">Try Again</button>
+                <button class="btn btn-primary" onclick="loadQuestions()">Next Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section id="progress" class="section">
+        <div class="container">
+            <h2>Your Progress</h2>
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <h4>Total Questions Attempted</h4>
+                    <p class="stat-number" id="total-attempted">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Correct Answers</h4>
+                    <p class="stat-number" id="total-correct">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Overall Accuracy</h4>
+                    <p class="stat-number" id="overall-accuracy">0%</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Quizzes Completed</h4>
+                    <p class="stat-number" id="quizzes-completed">0</p>
+                </div>
+            </div>
+
+            <div class="progress-details">
+                <h3>Performance by Subject</h3>
+                <div id="subject-performance" class="subject-performance">
+                    <p>No data yet. Start practicing to see your performance breakdown.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="clearProgress()">Reset Progress</button>
+        </div>
+    </section>
+
+    <!-- Study Tips Section -->
+    <section id="tips" class="section">
+        <div class="container">
+            <h2>Study Tips for JAMB Success</h2>
+            
+            <div class="tips-container">
+                <div class="tip-card">
+                    <h3>📚 Understand the Basics</h3>
+                    <p>Don't just memorize. Understand the fundamental concepts in each subject. This helps you solve new problems you haven't seen before.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>⏰ Practice Time Management</h3>
+                    <p>JAMB has 180 questions in 3 hours. Practice solving questions within time limits. Aim for about 1 minute per question.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>📝 Take Regular Practice Tests</h3>
+                    <p>Take full-length mock exams regularly. This helps you identify weak areas and build exam stamina and confidence.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>🎯 Focus on Weak Areas</h3>
+                    <p>Use your progress tracking to identify subjects or topics where you struggle. Spend extra time on these areas.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>🔄 Review Past Questions</h3>
+                    <p>JAMB often repeats concepts. Practice with previous years' questions to familiarize yourself with common question patterns.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>💡 Use Multiple Resources</h3>
+                    <p>Combine textbooks, online videos, and practice platforms. Different resources explain concepts in different ways.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>😴 Get Adequate Rest</h3>
+                    <p>A well-rested mind performs better. Ensure you get 7-8 hours of sleep daily during your preparation period.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3>💪 Stay Motivated</h3>
+                    <p>Set small goals and celebrate progress. Remember your dream university and why you're preparing for JAMB.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 JAMB Master. Helping students achieve their dreams. Good luck! 🎓</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAMB Master - Mock Exam In Progress</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .exam-taking-container {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .exam-question-area {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .exam-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .timer-display {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .timer-display h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-value.warning {
+            color: #ffc107;
+        }
+
+        .timer-value.danger {
+            color: #ff6b6b;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+
+        .question-counter {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .questions-nav {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.4rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .question-nav-btn {
+            padding: 0.5rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .question-nav-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .question-nav-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .question-nav-btn.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .exam-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .exam-controls button {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .btn-prev, .btn-next {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-prev:hover, .btn-next:hover {
+            background: #dee2e6;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 1.5rem 0;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .exam-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .exam-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .exam-option:hover {
+            background: #e9ecef;
+            border-color: var(--primary);
+        }
+
+        .exam-option input[type="radio"] {
+            margin-right: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .exam-option.selected {
+            background: #e7f3ff;
+            border-color: var(--primary);
+            border-width: 3px;
+        }
+
+        .exam-option span {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1024px) {
+            .exam-taking-container {
+                grid-template-columns: 1fr;
+            }
+
+            .exam-sidebar {
+                position: static;
+            }
+
+            .questions-nav {
+                grid-template-columns: repeat(10, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .exam-taking-container {
+                grid-template-columns: 1fr;
+            }
+
+            .exam-sidebar {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .questions-nav {
+                grid-column: 1 / -1;
+                grid-template-columns: repeat(15, 1fr);
+            }
+
+            .exam-controls {
+                grid-column: 1 / -1;
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+        <nav class="navbar">
+            <div class="container">
+    <ul class="nav-links">
+             <div class="logo"><a href="dashboard.html">📚 JAMB Master</a></div>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="quiz.html">Practice</a></li>
+                <li><a href="materials.html">Materials</a></li>
+                <li><a href="exam.html">Mock Exam</a></li>
+                <li><a href="leaderboard.html">Leaderboard</a></li>
+                <li><a href="settings.html">Settings</a></li>
+                <li><a href="#" onclick="logout(); return false;">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="exam-taking-container">
+            <!-- Main Exam Area -->
+            <div class="exam-question-area">
+                <div class="progress-header">
+                    <span class="question-counter"><span id="current-q">1</span> of <span id="total-q">180</span></span>
+                    <span id="subject-display"></span>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="exam-progress"></div>
+                </div>
+
+                <div id="question-display">
+                    <h3 id="question-text"></h3>
+                    <div class="exam-options" id="options-container"></div>
+                </div>
+
+                <div class="exam-controls">
+                    <button class="btn-prev" onclick="previousQuestion()">← Previous</button>
+                    <button class="btn-next" onclick="nextQuestion()">Next →</button>
+                    <button class="btn-submit" onclick="confirmSubmitExam()">Submit Exam</button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="exam-sidebar">
+                <div class="timer-display">
+                    <h3>⏱️ TIME REMAINING</h3>
+                    <div class="timer-value" id="timer">
+                        <span id="hours">03</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+                    </div>
+                </div>
+
+                <div class="progress-header" style="margin-bottom: 1rem; padding-bottom: 0.5rem;">
+                    <h4 style="margin: 0;">Questions</h4>
+                </div>
+
+                <div class="questions-nav" id="questions-nav"></div>
+
+                <div style="margin-top: 1rem; text-align: center; font-size: 0.85rem; color: #666;">
+                    <p><span class="question-nav-btn" style="display: inline-block; padding: 0.3rem 0.6rem; margin: 0.2rem;">✓</span> Answered</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 JAMB Master. All rights reserved. | Help Students Achieve Their Dreams 🎓</p>
+        </div>
+    </footer>
+
+    <script src="questions.js"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Exam Taking System
+        let examQuestions = [];
+        let currentQuestionIndex = 0;
+        let examAnswers = {};
+        let examStartTime = 0;
+        let timerInterval = null;
+        const EXAM_DURATION = 3 * 60 * 60; // 3 hours in seconds
+
+        // Initialize exam
+        function initializeExam() {
+            checkAuth();
+            loadExamQuestions();
+            startExamTimer();
+            displayQuestion();
+            updateProgressBar();
+            generateQuestionNav();
+        }
+
+        // Load all exam questions (180 total)
+        function loadExamQuestions() {
+            examQuestions = [];
+            const subjects = ['english', 'math', 'physics', 'chemistry', 'biology'];
+            let questionId = 1;
+
+            subjects.forEach(subject => {
+                const subjectQuestions = questionsDB[subject] || [];
+                // Use each question multiple times to get 36 per subject
+                for (let i = 0; i < 36; i++) {
+                    const q = subjectQuestions[i % subjectQuestions.length];
+                    examQuestions.push({
+                        ...q,
+                        id: questionId++,
+                        subject: subject,
+                        setIndex: Math.floor(i / subjectQuestions.length)
+                    });
+                }
+            });
+
+            // Shuffle questions
+            examQuestions = examQuestions.sort(() => Math.random() - 0.5);
+            
+            // Update IDs based on new order
+            examQuestions.forEach((q, idx) => {
+                q.questionNumber = idx + 1;
+            });
+        }
+
+        // Display current question
+        function displayQuestion() {
+            if (currentQuestionIndex >= examQuestions.length) {
+                return;
+            }
+
+            const question = examQuestions[currentQuestionIndex];
+            document.getElementById('current-q').textContent = currentQuestionIndex + 1;
+            document.getElementById('total-q').textContent = examQuestions.length;
+            document.getElementById('subject-display').textContent = `📚 ${question.subject.toUpperCase()}`;
+
+            // Display question text
+            document.getElementById('question-text').textContent = question.text;
+
+            // Display options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const isSelected = examAnswers[currentQuestionIndex] === index;
+                const label = document.createElement('label');
+                label.className = `exam-option ${isSelected ? 'selected' : ''}`;
+                label.innerHTML = `
+                    <input type="radio" name="exam-option" value="${index}" ${isSelected ? 'checked' : ''} onchange="selectAnswer(${index})">
+                    <span>${option}</span>
+                `;
+                optionsContainer.appendChild(label);
+            });
+
+            // Update nav button highlighting
+            updateNavButtons();
+        }
+
+        // Select answer
+        function selectAnswer(index) {
+            examAnswers[currentQuestionIndex] = index;
+            displayQuestion();
+            updateNavButtons();
+        }
+
+        // Navigate questions
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                updateProgressBar();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+                updateProgressBar();
+            }
+        }
+
+        // Generate question navigation
+        function generateQuestionNav() {
+            const navContainer = document.getElementById('questions-nav');
+            navContainer.innerHTML = '';
+
+            for (let i = 0; i < examQuestions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = `question-nav-btn ${i === currentQuestionIndex ? 'active' : ''} ${examAnswers[i] !== undefined ? 'answered' : ''}`;
+                btn.textContent = i + 1;
+                btn.onclick = () => {
+                    currentQuestionIndex = i;
+                    displayQuestion();
+                    updateProgressBar();
+                };
+                navContainer.appendChild(btn);
+            }
+        }
+
+        // Update nav buttons
+        function updateNavButtons() {
+            const buttons = document.querySelectorAll('.question-nav-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.remove('active');
+                btn.classList.remove('answered');
+                if (index === currentQuestionIndex) {
+                    btn.classList.add('active');
+                }
+                if (examAnswers[index] !== undefined) {
+                    btn.classList.add('answered');
+                }
+            });
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const percentage = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
+            document.getElementById('exam-progress').style.width = percentage + '%';
+        }
+
+        // Timer functionality
+        function startExamTimer() {
+            examStartTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - examStartTime) / 1000);
+            const remaining = EXAM_DURATION - elapsed;
+
+            if (remaining < 0) {
+                submitExam();
+                return;
+            }
+
+            const hours = Math.floor(remaining / 3600);
+            const minutes = Math.floor((remaining % 3600) / 60);
+            const seconds = remaining % 60;
+
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            // Change color based on time remaining
+            const timerValue = document.getElementById('timer');
+            if (remaining < 600) { // Less than 10 minutes
+                timerValue.classList.add('danger');
+                timerValue.classList.remove('warning');
+            } else if (remaining < 1800) { // Less than 30 minutes
+                timerValue.classList.add('warning');
+                timerValue.classList.remove('danger');
+            }
+        }
+
+        // Confirm submission
+        function confirmSubmitExam() {
+            const answered = Object.keys(examAnswers).length;
+            const total = examQuestions.length;
+            const unanswered = total - answered;
+
+            const message = `You have answered ${answered}/${total} questions.\n\n${unanswered} question(s) remain unanswered.\n\nAre you sure you want to submit the exam?`;
+            
+            if (confirm(message)) {
+                submitExam();
+            }
+        }
+
+        // Submit exam
+        function submitExam() {
+            clearInterval(timerInterval);
+
+            // Calculate results
+            let correctCount = 0;
+            examQuestions.forEach((question, index) => {
+                if (examAnswers[index] === question.correct) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = ((correctCount / examQuestions.length) * 100).toFixed(2);
+            const score = `${correctCount}/${examQuestions.length}`;
+
+            // Save exam to user progress
+            const users = JSON.parse(localStorage.getItem('jambUsers')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('currentLoggedInUser'));
+            
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                const user = users[userIndex];
+                user.progress.totalAttempted += examQuestions.length;
+                user.progress.totalCorrect += correctCount;
+
+                const examActivity = {
+                    type: 'exam',
+                    score: score,
+                    percentage: percentage,
+                    date: new Date().toLocaleString()
+                };
+
+                if (!user.progress.activities) {
+                    user.progress.activities = [];
+                }
+                user.progress.activities.unshift(examActivity);
+
+                users[userIndex] = user;
+                localStorage.setItem('jambUsers', JSON.stringify(users));
+                localStorage.setItem('currentLoggedInUser', JSON.stringify(user));
+            }
+
+            // Redirect to results page
+            sessionStorage.setItem('examResults', JSON.stringify({
+                score: score,
+                percentage: percentage,
+                correctCount: correctCount,
+                totalCount: examQuestions.length,
+                answers: examAnswers
+            }));
+
+            window.location.href = 'exam-results.html';
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initializeExam);
+
+        // Warn before leaving
+        window.addEventListener('beforeunload', (e) => {
+            if (timerInterval) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2.48.0"></script>
+    <script src="supabase-config.js"></script>
+</body>
+</html>
